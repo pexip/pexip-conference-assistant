@@ -1,48 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import { Box, Button, Input, Select } from '@pexip/components'
+import { Box, BoxHeader, Button, Select, ToggleSwitch } from '@pexip/components'
+
+import './Conference.scss'
+import { layouts } from '../Layout/layouts'
 
 export const Conference = (): JSX.Element => {
+  const [locked, setLocked] = useState(false)
+  const [layout, setLayout] = useState(layouts[0])
   return (
-    <Box className='Conference' colorScheme='light'>
-      <h3>Conference</h3>
-      <Select
-        value={''}
-        label={''}
-        onValueChange={function (id: string): void {
-          throw new Error('Function not implemented.')
-        }}
-        options={[]}
-      />
-      <Select
-        value={''}
-        label={''}
-        onValueChange={function (id: string): void {
-          throw new Error('Function not implemented.')
-        }}
-        options={[]}
-      />
-      <Button id='muteAllGuestsAudioButton' className='button secondary'>Mute All Guests</Button>
-      <Button id='unmuteAllGuestsAudioButton' className='button primary'>Unmute All Guests</Button>
-
-      <Select
-        value={''}
-        label={''}
-        onValueChange={function (id: string): void {
-          throw new Error('Function not implemented.')
-        }}
-        options={[]}
-      />
-      <Select
-        value={''}
-        label={''}
-        onValueChange={function (id: string): void {
-          throw new Error('Function not implemented.')
-        }}
-        options={[]}
-      />
-      <Button id='applyConferenceButton' className='button information'>Apply</Button>
-      <Input id='dialOutInput' name='text' className='textInput' placeholder='Dialout URI' label={''} />
+    <Box className='Conference'>
+      <BoxHeader>
+        <h3>Conference</h3>
+      </BoxHeader>
+      <div className='Container'>
+        <ToggleSwitch label='Locked'
+          onChange={() => {
+            setLocked(!locked)
+          }} checked={locked} name={''} />
+        <Select
+          value={layout}
+          label={'Layout'}
+          isFullWidth={true}
+          onValueChange={(id: string) => {
+            setLayout(id)
+            // TODO: Send layout to Infinity
+          }}
+          options={layouts.map((layout) => {
+            const option = {
+              id: layout,
+              label: layout
+            }
+            return option
+          })}
+        />
+        <Button>Mute All Guests</Button>
+        <Button>Unmute All Guests</Button>
+      </div>
     </Box>
   )
 }

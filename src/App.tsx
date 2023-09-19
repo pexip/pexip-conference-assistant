@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react'
 
 import { Header } from './components/Header/Header'
 
-import { Box, Button, Spinner, ThemeProvider } from '@pexip/components'
+import { Box, Button, Cell, Grid, Spinner, ThemeProvider, Wrapper } from '@pexip/components'
 import { Conference } from './components/Conference/Conference'
 import { Participants } from './components/Participants/Participants'
 import { Settings } from './components/Settings/Settings'
-
-import './App.scss'
 import { conferenceKey, displayNameKey, hostPinKey, nodeKey } from './constants'
 import { ClientCallType, type InfinityClient, createCallSignals, createInfinityClient, createInfinityClientSignals } from '@pexip/infinity'
+
+import './App.scss'
+
 enum AppState {
   Disconnected,
   Connecting,
@@ -83,8 +84,17 @@ export const App = (): JSX.Element => {
           }
           {appState === AppState.Connecting && <Spinner colorScheme='dark' className='Connecting' />}
           {appState === AppState.Connected && <>
-            <Conference />
-            <Participants />
+            <Wrapper className='Connected'>
+              <Grid className='Grid'>
+                <Cell xs={3} className='HorizontalCell'>
+                  <Conference />
+                  {/* <Layout /> */}
+                </Cell>
+                <Cell xs={9} className='HorizontalCell'>
+                  <Participants />
+                </Cell>
+              </Grid>
+            </Wrapper>
           </>}
           {settingsOpened &&
             <Settings onClose={() => { setSettingsOpened(false) }} />
