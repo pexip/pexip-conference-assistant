@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>Meeting Assistant - Powered by Pexip</title>
+		<link rel="icon" type="image/x-icon" href="">
+
+		<link rel="stylesheet" href="assets/css/index.css">
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+		  href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap"
+		  rel="stylesheet"
+		/>
+
+		<link
+		rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+		integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+		crossorigin="anonymous"
+		referrerpolicy="no-referrer"
+	  />
+
+	</head>
+	<body>
+		<script src="https://pexipdemo.com/static/webrtc/js/pexrtc.js"></script>
+		
+	 <div  id="siteWrapper">
+		<div id="notify-header">
+			<h1 class="myHeader">Meeting Assistant</h1>
+			<p class="linkHeader">Powered by Pexip</p>
+			<span>
+				<a id="weblinkLauncher" class="linkHeader" href="" target="_blank" style="color:gray; font-weight:400"></a>	
+				<a id="virtualFriends" class="linkHeader" href="https://au-pexep-1.pexip.com/gui/ep_ctrl?uri=pextv.lobby@pexipdemo.com&amp;pin=&amp;num_eps=5&amp;worker_ip=au-cn1.pexipdemo.com&amp;timeout=86400" target="_blank" style="color:gray; font-weight:400">Favourite Link</a>
+				<a id="openSettings" class="linkHeader" style="color:gray; font-weight:400; text-decoration: underline;">Settings</a>
+
+				<span hidden id="controlIndicators">
+				<i class="fa-solid fa-code greyIcon"></i><span id="apiCounter" class="spacer"></span>
+				<i id="hostIndicatorIcon" class="fa-solid fa-user-tie greyIcon "></i><span id="hostCounter" class="spacer"></span>
+				<i class="fa-regular fa-user greyIcon"></i><span id="guestCounter" class="spacer"></span>
+				<i id="lobbyIndicatorIcon" class="fa-solid fa-circle-exclamation greyIcon"></i><span id="lobbyCounter" class="spacer"></span>
+				</span>
+				
+			</span>
+			<br>
+			
+			<div class="logoContainer">
+				<img id="logoImage" height="80px" src="" alt="">
+			</div>
+			
+			<br>
+			<div hidden id="controlPanel" class="controlPanel">
+
+			<hr>
+			<h3>Conference</h3>
+			<select id="lockList" class="button primary" title="lockList"></select>
+			<select id="layoutList" class="button primary" title="layoutList"></select>
+			<button id="muteAllGuestsAudioButton" class="button secondary">Mute All Guests</button>
+			<button id="unmuteAllGuestsAudioButton" class="button primary">Unmute All Guests</button>
+
+			<select id="indicatorsList" class="button primary" title="indicatorsList"></select>
+			<br>
+			<select id="conferenceFeatureList"class="button information" title="conferenceFeatureList"></select>
+			<button id="applyConferenceButton" class="button information">Apply</button>
+			<input id="dialOutInput" name="text" class="textInput"  placeholder="Dialout URI" size="35"></input>	
+			<hr>
+			<h3>Layout Override</h3>
+			
+			
+			<select id="overrideLayoutList" class="button" title="Override Layout List"></select>
+			<Label>Overlay Text:</Label><select id="showPositionsInput" class="button">
+				<option value="off">Off</option>
+				<option value="auto">Show Overlay</option>
+				<option selected value="positional">Show Positions</option>
+			</select>
+
+			<Label>+N Indicator:</Label><select id="showPlusIndicatorInput" class="button">
+				<option value="auto">On</option>
+				<option value="off">Off</option>
+			</select>
+
+			<Label>Indicators:</Label><select id="showOverrideIndicatorInput" class="button">
+				<option value="auto">On</option>
+				<option value="off">Off</option>
+			</select>
+
+			<input id="includeSelfInput" type="checkbox" title="Remove Self">Show Self</input>
+			<input id="vadBackfillInput" type="checkbox" title="VAD Backfill">Actors Only</input>
+
+			<button id="addSelfVideoButton" class="button primary" onclick="getActors()">Get Participants</button>
+			<button id="addSelfVideoButton" class="button primary" onclick="getStage()">Get Stage</button>
+			
+			<button id="addSelfVideoButton" class="button secondary" onclick="layoutOverride()">Layout Override</button>
+			<div id="customLayoutParticipants" style="display: flex; flex-wrap: wrap">
+			<ul id="sortlist" class="slist" style="display: flex; flex-wrap: wrap"></ul>
+			</div>
+			<p style="margin:0px; margin-right: 5px; padding: 0px; text-align: right; color: gray;"><small>Drag to re-order, right click to delete</small></p>
+			
+			<hr>
+			<h3>Participants</h3>
+			<input id="participantName"name="text" class="textInput" readonly title="ParticipantID" placeholder="Participant Name" size="35"></input>	
+			<button id="admitButton" class="button primary">Admit</button>
+			<button id="disconnectButton" class="button secondary">Disconnect</button>
+			<button id="unmuteAudioButton" class="button primary">Unmute Audio</button>
+			<button id="muteAudioButton" class="button secondary">Mute Audio</button>
+			<button hidden id="unmuteVideoButton" class="button primary">Unmute Video</button>
+			<button hidden id="muteVideoButton" class="button secondary">Mute Video</button>
+			<button id="lowerHandButton" class="button primary">Lower Hand</button>
+			<button id="addToStageButton" class="button primary" onclick="addToStage()">Add to Stage</button>
+			<br>			
+			<select class="button information" id="participantFeatureList" title="participantFeatureList"></select>	
+			
+			<button id="applyParticipantButton" class="button information">Apply</button>
+			<input id="overlayNameInput" name="text" class="textInput" placeholder="Overlay Name" size="35"></input>
+			<input id="transferInput" name="text" class="textInput" placeholder="Transfer URI" size="35"></input>	
+			<input id="dtmfInput" name="text" class="textInput" placeholder="DTMF" size="14">#</input>
+			
+			</div>
+			
+		</div>
+		<div class="loginContainer">	
+			<label class="switch">
+				<input id="connectSwitch" type="checkbox">
+				<span class="slider round"></span>
+			</label>
+		</div>
+
+		<!-- The Modal -->
+<div hidden id="myModal" class="modal">
+	<!-- Modal content -->
+	<div class="modal-content">
+	<span class="close">&times;</span>
+	
+		<h1>Settings</h1>
+		<div class="grid-container">
+			<div class="grid-item row-header">Pexip Node</div>
+			<div class="grid-item"><input class="textInput" type="text" id="nodeSetting" size="75" placeholder="Conference Node"></input></div>
+	
+			<div class="grid-item row-header">Pexip Meeting Room</div>  
+			<div class="grid-item"><input class="textInput" type="text" id="vmrSetting" size="75" placeholder="Pexip Meeting Uri"></input></div>
+	
+			<div class="grid-item row-header">API Name</div>  
+			<div class="grid-item"><input class="textInput" type="text" id="apiNameSetting" size="75" placeholder="API user name"></input></div>
+	
+			<div class="grid-item row-header">Host Pin</div>
+			<div class="grid-item"><input class="textInput" type="password" id="pinSetting" size="14" placeholder="****"  size="4"></input></div> 
+	
+			<div class="grid-item row-header">WebApp link</div>
+			<div class="grid-item"><input class="textInput" type="url" id="weblinkSetting" size="75" placeholder="Pexip Connect Weblink"></input></div>   
+			
+			<div class="grid-item row-header">Logo Uri</div>
+			<div class="grid-item"><input class="textInput" type="url" id="logoSetting" size="75" placeholder="Logo Image Uri (e.g. 500x500 png)"></input></div>  
+	</div>
+	<button id="saveSettingsbutton" class="button primary"  onclick="saveSettings()">SAVE</button>
+	<button id="clearSettingsbutton" class="button secondary"  onclick="clearSettings()">CLEAR</button>
+	<button id="clearSettingsbutton" class="button"  onclick="exportSettings()">EXPORT</button>
+	<button id="clearSettingsbutton" class="button"  onclick="importSettings()">IMPORT</button>
+	</div>
+</div>
+
+<div hidden id="tableContainerDiv" class="tableContainerDiv">
+	<hr>
+	<label>Search:</label><input type="text" class="textInput" id="searchTableInput" onkeyup="searchTable()" placeholder="Filter Name..." title="Type in a name">
+
+	<table  id="table" class="styled-table">  
+        <thead>
+           <tr id="tableHeader">
+			  <th hidden data-type="string">uuid</th>
+              <th data-type="string">Name</th>
+              <th data-type="string">OverlayText</th>
+              <th hidden data-type="string">Alias</th>
+			  <th data-type="string" title="Call Direction - IN /OUT"></th> 
+              <th data-type="string">Type</th>  
+              <th data-type="string">JoinTime</th>          
+              <th hidden data-type="string">Room</th>
+              <th hidden data-type="string">Ctag</th>
+              <th class="center" data-type="string" title="Host or Guest"><i class="fa-solid fa-user-tie"></i></th>  
+              <th class="center" title="Call type - api|browser|sip"><i class="fa-solid fa-tv"></i></th>
+              <th class="center" data-type="string" title="Has Encryption enabled"><i class="fa-solid fa-shield-halved "></i></th>
+              <th class="center" data-type="string" title="Has audio capability"><i class="fa-solid fa-microphone"></i></th>
+              <th class="center" data-type="string" title="Has video capability"><i class="fa-solid fa-video"></i></th>
+              <th class="center" data-type="string" title="Has FECC capability"><i class="fa-solid fa-up-down-left-right"></i></th>
+              <th class="center" data-type="string" title="Spotlight"><i class="fa-solid fa-crosshairs"></i></th>
+			  <th class="center" data-type="string" title="Raise Hand"><i class="fa-regular fa-hand"></i></th>
+			  <th class="center" data-type="string" title="Is Presenting"><i class="fa-solid fa-chart-line"></i></th>
+           </tr>
+        </thead>
+      <tbody id="data-output"></tbody>
+
+	</div>
+
+</div>
+
+
+
+</div>		
+
+
+	<script src="assets/js/utils.js"></script>
+	 <script src="assets/js/index.js"></script>
+	 <script src="assets/js/menu.js" ></script>
+		 
+	</body>
+</html>

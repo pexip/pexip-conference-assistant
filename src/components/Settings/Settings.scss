@@ -1,0 +1,22 @@
+.Settings {
+  display: flex;
+  max-height: 100%;
+  .CloseButton {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+  .InputContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    overflow: auto;
+  }
+  .ButtonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

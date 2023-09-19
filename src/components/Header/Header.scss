@@ -1,0 +1,19 @@
+.Header {
+  display: flex;
+  padding: 1em !important;
+  align-items: center;
+
+  .Logo {
+    margin-right: 2em;
+  }
+
+  .Title {
+    flex-grow: 1;
+    text-align: left;
+  }
+
+  .ButtonText {
+    line-height: 1.5em;
+    margin-left: 0.5em;
+  }
+}

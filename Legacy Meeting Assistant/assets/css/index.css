@@ -1,0 +1,351 @@
+body {
+    font-family: sans-serif;
+    font-size: 14px;
+    width: 1200px;
+    margin: 0px;
+    padding: 0px;
+}
+
+a {
+  margin-right: 20px;
+}
+
+p{
+  margin-left: 5px;
+}
+
+h3{
+  margin: 0px;
+  margin-left: 5px;
+  margin-bottom: 2px;
+  padding: 0px;
+}
+
+label {
+  margin-left: 5px;
+}
+
+.myHeader {
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+.linkHeader {
+  margin-top: 2px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+.controlPanel {
+  background-color: #D9D9D9;
+}
+
+.textInput {
+  border: 2px solid rgba( 26, 115, 232, 0.4 );
+  border-radius: 4px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  font-weight: 500;
+  justify-content: center;
+  outline-width: 0;
+  background: white;
+  margin-top : 5px;
+  margin-bottom : 5px;
+  margin-left: 5px;
+  padding: 5px;
+}
+
+.button {
+    border: 1px solid rgb( 218, 220, 224 );
+    border-radius: 4px;
+    box-sizing: border-box;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-weight: 500;
+    justify-content: center;
+    outline-width: 0;
+    background: white;
+    margin-top : 5px;
+    margin-bottom : 5px;
+    margin-left: 5px;
+    padding: 5px;
+}
+
+.button:hover {
+    background: rgba( 66, 133, 244, .2 );
+    border-color: 210, 227, 252;
+}
+
+.button.primary {
+    background: rgb( 26, 115, 232 );
+    color: #fff;
+    border-color: 210, 227, 252;
+}
+
+.button.primary:hover {
+    background: rgba( 26, 115, 232, 0.9 );
+    box-shadow: 0 1px 2px 0 rgba( 66, 133, 244, .3),
+    0 1px 3px 1px rgba( 66, 133, 244, .15);
+}
+
+.button.secondary {
+  background: orangered;
+  color: #fff;
+  border-color: 210, 227, 252;
+}
+
+.button.information {
+  background: green;
+  color: #fff;
+  border-color: 210, 227, 252;
+}
+
+.spacer {
+  padding-left: 5px;
+  padding-right: 10px;
+}
+
+.center {
+  text-align: center;
+}
+
+.greyIcon {
+  color: gray;
+}
+
+.purpleIcon {
+  color:magenta;
+}
+
+.goldIcon {
+  color:rgb(192, 166, 3);
+}
+
+.redIcon {
+  color: red;
+}
+
+.notify-buttons p {
+    margin: 10px 0 5px 10px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 200px auto;
+    padding: 10px;
+    column-gap: 5px;
+    row-gap: 5px;
+  }
+  .grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px;
+  }
+
+  .row-header{
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #32CD32;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #32CD32;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  
+  .loginContainer {
+    position: absolute;
+    top: 5px;
+    right: 120px;
+    margin: 5px;
+  }
+
+  .logoContainer {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 5px;
+  }
+
+  .a {
+    margin:5px;
+    padding: 5px;
+  }
+
+hr {
+    background-color: #eee;
+    border: 0 none;
+    color: #eee;
+    height: 1px;
+}
+
+#searchTableInput {
+  width: 600px;
+  border: 1px solid #ddd;
+  margin-left: 5px;
+  margin-bottom: 5px;  
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  
+}
+
+th {
+  text-align: left;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: 0px;
+  background-color: gray;
+  color: white;
+}
+
+td {
+  text-align: left;
+  padding: 1px;
+  line-height: 0px;
+}
+
+.tableContainerDiv {
+  overflow: auto;
+}
+
+.td-truncate {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.active {
+  color: red;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* LIST STYLES */
+.slist {
+  list-style: none;
+  padding: 2px;
+  margin: 4px;
+ 
+}
+.slist li {
+  margin: 4px;
+  padding: 4px;
+  border: 1px solid white;
+  color: white;
+  border-radius: 5px;
+  background: #02b2fd;
+  display: inline;
+  font-size: 13px;
+}
+
+/* DRAG-AND-DROP HINT */
+
+.slist li:hover {
+  opacity: 0.9;
+}
+
+.slist li.hint {
+  background: grey;
+}
+
+.slist li.active {
+  background: pink;
+}
+
