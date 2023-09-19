@@ -1,9 +1,10 @@
 {
-  "name": "meeting-assistant",
+  "name": "conference-assistant",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@pexip/components": "^16.11.0",
+    "@pexip/infinity": "^16.11.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

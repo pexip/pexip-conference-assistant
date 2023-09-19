@@ -12,8 +12,12 @@
     text-align: left;
   }
 
-  .ButtonText {
-    line-height: 1.5em;
-    margin-left: 0.5em;
+  .Button {
+    margin-left: 1em;
+    
+    .ButtonText {
+      line-height: 1.5em;
+      margin-left: 0.5em;
+    }
   }
 }

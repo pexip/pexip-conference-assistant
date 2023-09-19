@@ -1,55 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { Button, Form, Icon, IconTypes, Input, Modal, ModalCloseButton, Tooltip } from '@pexip/components'
+import { Button, Form, Input, Modal, ModalCloseButton } from '@pexip/components'
 
 import './Settings.scss'
-
-interface Config {
-  node: string
-  conference: string
-  displayName: string
-  hostPin: string
-  webAppUrl: string
-  logoUrl: string
-}
+import { conferenceKey, displayNameKey, hostPinKey, nodeKey } from '../../constants'
 
 interface SettingsProps {
   onClose: () => void
 }
 
 export const Settings = (props: SettingsProps): JSX.Element => {
-  const save = (event: React.FormEvent<HTMLFormElement>): void => {
-    // const config = getConfigFromEvent(event)
-  }
+  const [node, setNode] = useState('')
+  const [conference, setConference] = useState('')
+  const [displayName, setDisplayName] = useState('')
+  const [hostPin, setHostPin] = useState('')
 
-  const clear = (): void => {
+  useEffect(() => {
+    const node = localStorage.getItem(nodeKey) ?? ''
+    setNode(node)
 
-  }
+    const conference = localStorage.getItem(conferenceKey) ?? ''
+    setConference(conference)
 
-  const importConfig = (): void => {
-    alert('Not Implemented yet!')
-  }
+    const displayName = localStorage.getItem(displayNameKey) ?? ''
+    setDisplayName(displayName)
 
-  const downloadConfig = (): void => {
-    const config = getConfigFromEvent(event)
-    const a = document.createElement('a')
-    const file = new Blob([JSON.stringify(config)], { type: 'application/json' })
-    a.href = URL.createObjectURL(file)
-    a.download = 'config.json'
-    a.click()
-  }
+    const hostPin = localStorage.getItem(hostPinKey) ?? ''
+    setHostPin(hostPin)
+  }, [])
 
-  const getConfigFromEvent = (event: any): Config => {
-    const target = event.target
-    const config = {
-      node: target.node?.value ?? '',
-      conference: target.conference?.value ?? '',
-      displayName: target.displayName?.value ?? '',
-      hostPin: target.hostPin?.value ?? '',
-      webAppUrl: target.webAppUrl?.value ?? '',
-      logoUrl: target.logoUrl?.value ?? ''
-    }
-    return config
+  const save = (event: any): void => {
+    const node = event.target.node.value
+    localStorage.setItem(nodeKey, node)
+
+    const conference = event.target.conference.value
+    localStorage.setItem(conferenceKey, conference)
+
+    const displayName = event.target.displayName.value
+    localStorage.setItem(displayNameKey, displayName)
+
+    const hostPin = event.target.hostPin.value
+    localStorage.setItem(hostPinKey, hostPin)
+
+    props.onClose()
   }
 
   return (
@@ -61,34 +54,18 @@ export const Settings = (props: SettingsProps): JSX.Element => {
         save(e)
       }}>
       <div className='InputContainer'>
-        <Input type='text' required placeholder='Conference Node' label='Pexip Node' name='conferenceNode' />
-        <Input type='text' required placeholder='Pexip Meeting Uri' label='Pexip Meeting Room' name='conference' />
-        <Input type='text' required placeholder='API user name' label='API Name' name='displayName' />
-        <Input type='password' required placeholder='****' label='Host Pin' name='hostPin' />
-        <Input type='url' required placeholder='Pexip Connect Weblink' label='WebApp link' name='webAppUrl' />
-        <Input type='url' required placeholder='Logo Image Uri (e.g. 500x500 png)' label='Logo Uri' name='logoUrl' />
+        <Input type='text' required label='Conferencing Node' placeholder='Domain or IP' name='node'
+          value={node} onChange={(event) => { setNode(event.target.value) }} />
+        <Input type='text' required label='Conference' placeholder='Room name' name='conference'
+          value={conference} onChange={(event) => { setConference(event.target.value) }} />
+        <Input type='text' required label='Display name' placeholder='e.g. API connection' name='displayName'
+          value={displayName} onChange={(event) => { setDisplayName(event.target.value) }} />
+        <Input type='password' required label='Host PIN' placeholder='e.g. 7645' name='hostPin'
+          value={hostPin} onChange={(event) => { setHostPin(event.target.value) }} />
       </div>
       <div className='ButtonContainer'>
-        <Tooltip text='Save' colorScheme='dark'>
-          <Button type='submit'>
-            <Icon source={IconTypes.IconCheckmark} />
-          </Button>
-        </Tooltip>
-        <Tooltip text='Clear' colorScheme='dark'>
-          <Button onClick={clear}>
-            <Icon source={IconTypes.IconTrash} />
-          </Button>
-        </Tooltip>
-        <Tooltip text='Download config' colorScheme='dark'>
-          <Button onClick={downloadConfig}>
-            <Icon source={IconTypes.IconExport} />
-          </Button>
-        </Tooltip>
-        <Tooltip text='Import config' colorScheme='dark'>
-          <Button onClick={importConfig}>
-            <Icon source={IconTypes.IconImport} />
-          </Button>
-        </Tooltip>
+        <Button type='submit'>Save</Button>
+        <Button onClick={props.onClose}>Cancel</Button>
         </div>
       </Form>
     </Modal>
