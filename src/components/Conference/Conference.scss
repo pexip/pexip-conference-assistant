@@ -4,5 +4,14 @@
     flex-direction: column;
     padding: 1em;
     gap: 1em;
+
+    .TogglesContainer {
+      display: flex;
+      flex-flow: row;
+
+      .Toggle {
+        flex-grow: 1;
+      }
+    }
   }
 }

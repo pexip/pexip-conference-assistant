@@ -1,0 +1,28 @@
+.ErrorPanel {
+  display: flex;
+  max-height: 100%;
+  
+  h2{
+    text-align: center;
+  }
+
+  .CloseButton {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+  .InputContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    overflow: auto;
+    align-items: center;
+  }
+  .ButtonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+}
