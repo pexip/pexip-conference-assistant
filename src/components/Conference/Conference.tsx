@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
 import { Box, BoxHeader, Select, ToggleSwitch } from '@pexip/components'
-import { type Transforms, type InfinityClient } from '@pexip/infinity'
+import type {
+  Transforms,
+  InfinityClient,
+  ConferenceStatus,
+  LayoutEvent
+} from '@pexip/infinity'
 
 import './Conference.scss'
 
@@ -10,8 +15,8 @@ type Layout = typeof layouts[number]
 
 interface ConferenceProps {
   infinityClient: InfinityClient
-  conferenceStatus: any
-  layoutStatus: any
+  conferenceStatus: ConferenceStatus | undefined
+  layoutStatus: LayoutEvent | undefined
 }
 
 export const Conference = (props: ConferenceProps): JSX.Element => {
@@ -34,8 +39,7 @@ export const Conference = (props: ConferenceProps): JSX.Element => {
     if (props.layoutStatus != null) {
       const newLayout = props.layoutStatus.requested_layout.primary_screen.chair_layout
       if (newLayout !== layout) {
-        console.log('Changing layout')
-        setLayout(newLayout)
+        setLayout(newLayout as Layout)
       }
     }
   }, [props.layoutStatus])

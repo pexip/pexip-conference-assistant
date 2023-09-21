@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Header } from './components/Header/Header'
 
-import { Box, Button, Cell, Grid, Spinner, ThemeProvider, Wrapper } from '@pexip/components'
+import { Box, Button, Cell, Grid, NotificationToast, Spinner, ThemeProvider, Wrapper } from '@pexip/components'
 import { Conference } from './components/Conference/Conference'
 import { Participants } from './components/Participants/Participants'
 import { Settings } from './components/Settings/Settings'
@@ -14,7 +14,8 @@ import {
   createInfinityClient,
   createInfinityClientSignals,
   type ExtendedInfinityErrorCode,
-  type ExtendedInfinityErrorMessage
+  type ExtendedInfinityErrorMessage,
+  type Participant
 } from '@pexip/infinity'
 
 import './App.scss'
@@ -37,6 +38,7 @@ export const App = (): JSX.Element => {
   const [error, setError] = useState('')
   const [conferenceStatus, setConferenceStatus] = useState()
   const [layoutStatus, setLayoutStatus] = useState()
+  const [participants, setParticipants] = useState<Participant[]>([])
 
   useEffect(() => {
     const disconnectBrowserClosed = (): void => {
@@ -51,7 +53,7 @@ export const App = (): JSX.Element => {
       setError(e.error)
     }
 
-    const onAuthenticatedWithConference = (): void => {
+    const onConnected = (): void => {
       setAppState(AppState.Connected)
     }
 
@@ -69,19 +71,27 @@ export const App = (): JSX.Element => {
       setLayoutStatus(event)
     }
 
+    const onParticipants = (event: any): void => {
+      if (event.id === 'main') {
+        setParticipants(event.participants)
+      }
+    }
+
     window.addEventListener('beforeunload', disconnectBrowserClosed)
     infinityClientSignals.onError.add(onError)
     infinityClientSignals.onDisconnected.add(onDisconnected)
-    infinityClientSignals.onAuthenticatedWithConference.add(onAuthenticatedWithConference)
+    infinityClientSignals.onConnected.add(onConnected)
     infinityClientSignals.onConferenceStatus.add(onConferenceStatus)
     infinityClientSignals.onLayoutUpdate.add(onLayoutUpdate)
+    infinityClientSignals.onParticipants.add(onParticipants)
     return () => {
       window.removeEventListener('beforeunload', disconnectBrowserClosed)
       infinityClientSignals.onError.remove(onError)
       infinityClientSignals.onDisconnected.remove(onDisconnected)
-      infinityClientSignals.onAuthenticatedWithConference.remove(onAuthenticatedWithConference)
+      infinityClientSignals.onConnected.remove(onConnected)
       infinityClientSignals.onConferenceStatus.remove(onConferenceStatus)
       infinityClientSignals.onLayoutUpdate.remove(onLayoutUpdate)
+      infinityClientSignals.onParticipants.remove(onParticipants)
     }
   }, [])
 
@@ -115,6 +125,7 @@ export const App = (): JSX.Element => {
   return (
     <div className='App'>
       <ThemeProvider colorScheme='light'>
+        <NotificationToast timeout={3000} position='topCenter' />
         <Header
           isConnected={appState === AppState.Connected}
           onDisconnectClick={() => {
@@ -132,7 +143,7 @@ export const App = (): JSX.Element => {
             </Box>
           }
           {appState === AppState.Connecting && <Spinner colorScheme='dark' className='Connecting' />}
-          {appState === AppState.Connected && <>
+          {appState === AppState.Connected &&
             <Wrapper className='Connected'>
               <Grid className='Grid'>
                 <Cell xs={3} className='HorizontalCell'>
@@ -143,11 +154,14 @@ export const App = (): JSX.Element => {
                   />
                 </Cell>
                 <Cell xs={9} className='HorizontalCell'>
-                  <Participants />
+                  <Participants
+                    infinityClient={infinityClient}
+                    participants={participants}
+                  />
                 </Cell>
               </Grid>
             </Wrapper>
-          </>}
+          }
           {appState === AppState.Error && <ErrorPanel message={error} onClose={() => { setAppState(AppState.Disconnected) }}/>}
           {settingsOpened &&
             <Settings onClose={() => { setSettingsOpened(false) }} />
