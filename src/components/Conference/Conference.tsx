@@ -22,6 +22,7 @@ interface ConferenceProps {
 export const Conference = (props: ConferenceProps): JSX.Element => {
   const [locked, setLocked] = useState(false)
   const [guestsMuted, setGuestMuted] = useState(false)
+  const [overlayText, setOverlayText] = useState(false)
   const [layout, setLayout] = useState<Layout>()
 
   useEffect(() => {
@@ -41,6 +42,10 @@ export const Conference = (props: ConferenceProps): JSX.Element => {
       if (newLayout !== layout) {
         setLayout(newLayout as Layout)
       }
+      const newOverlayText = props.layoutStatus.overlay_text_enabled
+      if (newOverlayText != null && newOverlayText !== overlayText) {
+        setOverlayText(newOverlayText)
+      }
     }
   }, [props.layoutStatus])
 
@@ -58,13 +63,19 @@ export const Conference = (props: ConferenceProps): JSX.Element => {
     setGuestMuted(!guestsMuted)
   }
 
-  const onChangeLayout = (id: string): void => {
+  const onToggleOverlayText = (): void => {
+    const newOverlayText = !overlayText
+    onChangeLayout(layout as string, newOverlayText)
+    setOverlayText(newOverlayText)
+  }
+
+  const onChangeLayout = (id: string, enableOverlayText = overlayText): void => {
     const layout = id as Layout
     let transforms: Transforms
     if (layout != null && layout as any !== 'default') {
-      transforms = { layout }
+      transforms = { layout, enable_overlay_text: enableOverlayText }
     } else {
-      transforms = {}
+      transforms = { enable_overlay_text: enableOverlayText }
     }
     props.infinityClient.setLayout({
       transforms
@@ -88,6 +99,9 @@ export const Conference = (props: ConferenceProps): JSX.Element => {
             checked={guestsMuted} name={''}
             className='Toggle' />
         </div>
+      </div>
+      <hr className='Separator'/>
+      <div className='Container'>
         <Select
           value={layout as Layout}
           label={'Layout'}
@@ -104,6 +118,12 @@ export const Conference = (props: ConferenceProps): JSX.Element => {
             return option
           }))}
         />
+        <div className='TogglesContainer'>
+          <ToggleSwitch label='Overlay text'
+            onChange={onToggleOverlayText}
+            checked={overlayText} name={''}
+            className='Toggle' />
+        </div>
       </div>
     </Box>
   )
