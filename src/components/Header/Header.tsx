@@ -14,7 +14,7 @@ export const Header = (props: HeaderProps): JSX.Element => {
   return (
     <Box className='Header' colorScheme='dark'>
       <PexipLogo className='Logo'/>
-      <h2 className='Title'>Conference Assistance</h2>
+      <h2 className='Title'>Conference Assistant</h2>
       {props.isConnected &&
         <Button className='Button' colorScheme='dark' onClick={props.onDisconnectClick}>
           <Icon source={IconTypes.IconLeave} />
