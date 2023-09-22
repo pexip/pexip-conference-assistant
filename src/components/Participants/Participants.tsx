@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
   Box,
@@ -6,6 +6,7 @@ import {
   FontVariant,
   Icon,
   IconTypes,
+  Input,
   Select,
   Table,
   TableBody,
@@ -52,6 +53,28 @@ enum Action {
 }
 
 export const Participants = (props: ParticipantsProps): JSX.Element => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [participants, setParticipants] = useState<Participant[]>()
+
+  useEffect(() => {
+    if (props.me != null) {
+      props.infinityClient.sendConferenceRequest({
+        path: 'participants',
+        method: 'GET'
+      })
+        .then((response) => {
+          if (response?.status === 200) {
+            (response.data as any).result.forEach((user: any) => {
+              const participant = props.participants.find((participant) => participant.uuid === user.uuid);
+              (participant as any).overlayText = user.overlay_text
+            })
+          }
+          setParticipants(props.participants)
+        })
+        .catch((e) => { console.error(e) })
+    }
+  }, [props.participants])
+
   const createBodyCell = (content: JSX.Element | string): JSX.Element => (
     <TableCell className='TableBodyCell'>
       <Text
@@ -302,10 +325,18 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
       .catch((e) => { console.log(e) })
   }
 
-  const participantsRows = props.participants.map((participant) => (
+  const participantsRows = participants?.map((participant) => (
     <TableRow key={participant.uuid}>
       {createBodyCell(participant.displayName ?? 'Unknown')}
-      {/* {createBodyCell(<Text contentEditable={true}>{participant.}</Text>)} */}
+      {createBodyCell(<Input type="text" className='OverlayText' onChange={(event: any) => {
+        const overlayText = event.target.value
+        props.infinityClient.setTextOverlay({
+          participantUuid: participant.uuid,
+          text: overlayText
+        }).catch((e) => { console.log(e) });
+        (participant as any).overlayText = overlayText
+        setParticipants(JSON.parse(JSON.stringify(participants)))
+      } } value={(participant as any).overlayText} label={''} name={''} />)}
       {createBodyCell(participant.role === 'chair' ? 'host' : 'guest')}
       {createBodyCell(participant.protocol)}
       {createBodyCell(participant.isWaiting
@@ -368,7 +399,7 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
               <TableHead>
                 <TableRow>
                   {createHeaderCell('Display name')}
-                  {/* {createHeaderCell('Overlay text')} */}
+                  {createHeaderCell('Overlay text')}
                   {createHeaderCell('Role')}
                   {createHeaderCell('Protocol')}
                   {createHeaderCell('In waiting room')}

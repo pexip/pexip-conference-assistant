@@ -155,14 +155,14 @@ export const App = (): JSX.Element => {
           {appState === AppState.Connected &&
             <Wrapper className='Connected'>
               <Grid className='Grid'>
-                <Cell xs={3} className='HorizontalCell'>
+                <Cell xs={2} className='HorizontalCell'>
                   <Conference
                     infinityClient={infinityClient}
                     conferenceStatus={conferenceStatus}
                     layoutStatus={layoutStatus}
                   />
                 </Cell>
-                <Cell xs={9} className='HorizontalCell'>
+                <Cell xs={10} className='HorizontalCell'>
                   <Participants
                     infinityClient={infinityClient}
                     participants={participants}

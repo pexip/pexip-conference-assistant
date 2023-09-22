@@ -4,5 +4,8 @@
   }
   .TableBodyCell, .TableHeadCell {
     justify-content: center;
+    .OverlayText > label:first-child {
+      display: none
+    }
   }
 }
