@@ -60,7 +60,7 @@ export const Settings = (props: SettingsProps): JSX.Element => {
           value={conference} onChange={(event) => { setConference(event.target.value) }} />
         <Input type='text' required label='Display name' placeholder='e.g. API connection' name='displayName'
           value={displayName} onChange={(event) => { setDisplayName(event.target.value) }} />
-        <Input type='password' required label='Host PIN' placeholder='e.g. 7645' name='hostPin'
+        <Input type='password' label='Host PIN' placeholder='e.g. 7645' name='hostPin'
           value={hostPin} onChange={(event) => { setHostPin(event.target.value) }} />
       </div>
       <div className='ButtonContainer'>
