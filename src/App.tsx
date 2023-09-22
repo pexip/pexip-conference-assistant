@@ -39,6 +39,7 @@ export const App = (): JSX.Element => {
   const [conferenceStatus, setConferenceStatus] = useState()
   const [layoutStatus, setLayoutStatus] = useState()
   const [participants, setParticipants] = useState<Participant[]>([])
+  const [me, setMe] = useState<Participant>()
 
   useEffect(() => {
     const disconnectBrowserClosed = (): void => {
@@ -77,6 +78,12 @@ export const App = (): JSX.Element => {
       }
     }
 
+    const onMe = (event: any): void => {
+      if (event.id === 'main') {
+        setMe(event.participant)
+      }
+    }
+
     window.addEventListener('beforeunload', disconnectBrowserClosed)
     infinityClientSignals.onError.add(onError)
     infinityClientSignals.onDisconnected.add(onDisconnected)
@@ -84,6 +91,7 @@ export const App = (): JSX.Element => {
     infinityClientSignals.onConferenceStatus.add(onConferenceStatus)
     infinityClientSignals.onLayoutUpdate.add(onLayoutUpdate)
     infinityClientSignals.onParticipants.add(onParticipants)
+    infinityClientSignals.onMe.add(onMe)
     return () => {
       window.removeEventListener('beforeunload', disconnectBrowserClosed)
       infinityClientSignals.onError.remove(onError)
@@ -92,6 +100,7 @@ export const App = (): JSX.Element => {
       infinityClientSignals.onConferenceStatus.remove(onConferenceStatus)
       infinityClientSignals.onLayoutUpdate.remove(onLayoutUpdate)
       infinityClientSignals.onParticipants.remove(onParticipants)
+      infinityClientSignals.onMe.remove(onMe)
     }
   }, [])
 
@@ -157,6 +166,7 @@ export const App = (): JSX.Element => {
                   <Participants
                     infinityClient={infinityClient}
                     participants={participants}
+                    me={me}
                   />
                 </Cell>
               </Grid>

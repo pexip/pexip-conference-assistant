@@ -27,6 +27,7 @@ import './Participants.scss'
 interface ParticipantsProps {
   infinityClient: InfinityClient
   participants: Participant[]
+  me: Participant | undefined
 }
 
 interface Option {
@@ -102,10 +103,12 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
       }])
     }
 
-    options.push({
-      id: participant.role === 'chair' ? Action.MakeGuest : Action.MakeHost,
-      label: participant.role === 'chair' ? 'Make guest' : 'Make host'
-    })
+    if (props.me != null && props.me.uuid !== participant.uuid) {
+      options.push({
+        id: participant.role === 'chair' ? Action.MakeGuest : Action.MakeHost,
+        label: participant.role === 'chair' ? 'Make guest' : 'Make host'
+      })
+    }
 
     options.push({
       id: Action.Disconnect,
