@@ -1,4 +1,4 @@
-# Conference Assistance
+# Conference Assistant
 
 This project tries to provide a web interface to manage a conference.
 
