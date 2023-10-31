@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals'
 import '@pexip/components/src/fonts.css'
 // Import other global styles
 import '@pexip/components/dist/style.css'
+import '@pexip/media-components/dist/style.css'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

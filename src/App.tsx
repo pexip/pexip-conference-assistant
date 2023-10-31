@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Header } from './components/Header/Header'
 
-import { Button, NotificationToast, Spinner, Tab, Tabs, ThemeProvider } from '@pexip/components'
-import { Conference } from './components/Conference/Conference'
+import { Button, Icon, IconTypes, NotificationToast, Spinner, Tab, Tabs, ThemeProvider } from '@pexip/components'
 import { Participants } from './components/Participants/Participants'
 import { Settings } from './components/Settings/Settings'
 import { conferenceKey, displayNameKey, hostPinKey, nodeKey } from './constants'
@@ -22,6 +21,7 @@ import {
 import './App.scss'
 import { ErrorPanel } from './components/ErrorPanel/ErrorPanel'
 import { Chat } from './components/Chat/Chat'
+import { LayoutSelector } from './components/LayoutSelector/LayoutSelector'
 
 enum AppState {
   Disconnected,
@@ -38,8 +38,8 @@ export const App = (): JSX.Element => {
   const [appState, setAppState] = useState<AppState>(AppState.Disconnected)
   const [settingsOpened, setSettingsOpened] = useState<boolean>(false)
   const [error, setError] = useState('')
-  const [conferenceStatus, setConferenceStatus] = useState()
-  const [layoutStatus, setLayoutStatus] = useState()
+  // const [conferenceStatus, setConferenceStatus] = useState()
+  // const [layoutStatus, setLayoutStatus] = useState()
   const [participants, setParticipants] = useState<Participant[]>([])
   const [me, setMe] = useState<Participant>()
   const [messages, setMessages] = useState<Message[]>([])
@@ -67,12 +67,12 @@ export const App = (): JSX.Element => {
 
     const onConferenceStatus = (event: any): void => {
       if (event.id === 'main') {
-        setConferenceStatus(event.status)
+        // setConferenceStatus(event.status)
       }
     }
 
     const onLayoutUpdate = (event: any): void => {
-      setLayoutStatus(event)
+      // setLayoutStatus(event)
     }
 
     const onParticipants = (event: any): void => {
@@ -176,13 +176,15 @@ export const App = (): JSX.Element => {
                   />
                 </Tab>
                 <Tab title='Layout'>
-                <Conference
+                  <LayoutSelector />
+                  {/* <Conference
                     infinityClient={infinityClient}
                     conferenceStatus={conferenceStatus}
                     layoutStatus={layoutStatus}
-                  />
+                  /> */}
                 </Tab>
               </Tabs>
+              <Button colorScheme='light'><Icon source={IconTypes.IconRaiseHand} />Rise hand</Button>
             </div>
           }
           {appState === AppState.Error && <ErrorPanel message={error} onClose={() => { setAppState(AppState.Disconnected) }}/>}
