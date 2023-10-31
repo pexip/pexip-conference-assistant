@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Header } from './components/Header/Header'
 
-import { Box, Button, Cell, Grid, NotificationToast, Spinner, ThemeProvider, Wrapper } from '@pexip/components'
+import { Button, NotificationToast, Spinner, Tab, Tabs, ThemeProvider } from '@pexip/components'
 import { Conference } from './components/Conference/Conference'
 import { Participants } from './components/Participants/Participants'
 import { Settings } from './components/Settings/Settings'
@@ -15,11 +15,13 @@ import {
   createInfinityClientSignals,
   type ExtendedInfinityErrorCode,
   type ExtendedInfinityErrorMessage,
-  type Participant
+  type Participant,
+  type Message
 } from '@pexip/infinity'
 
 import './App.scss'
 import { ErrorPanel } from './components/ErrorPanel/ErrorPanel'
+import { Chat } from './components/Chat/Chat'
 
 enum AppState {
   Disconnected,
@@ -40,6 +42,7 @@ export const App = (): JSX.Element => {
   const [layoutStatus, setLayoutStatus] = useState()
   const [participants, setParticipants] = useState<Participant[]>([])
   const [me, setMe] = useState<Participant>()
+  const [messages, setMessages] = useState<Message[]>([])
 
   useEffect(() => {
     const disconnectBrowserClosed = (): void => {
@@ -84,6 +87,11 @@ export const App = (): JSX.Element => {
       }
     }
 
+    const onMessage = (message: Message): void => {
+      messages.push(message)
+      setMessages([...messages])
+    }
+
     window.addEventListener('beforeunload', disconnectBrowserClosed)
     infinityClientSignals.onError.add(onError)
     infinityClientSignals.onDisconnected.add(onDisconnected)
@@ -92,6 +100,7 @@ export const App = (): JSX.Element => {
     infinityClientSignals.onLayoutUpdate.add(onLayoutUpdate)
     infinityClientSignals.onParticipants.add(onParticipants)
     infinityClientSignals.onMe.add(onMe)
+    infinityClientSignals.onMessage.add(onMessage)
     return () => {
       window.removeEventListener('beforeunload', disconnectBrowserClosed)
       infinityClientSignals.onError.remove(onError)
@@ -101,6 +110,7 @@ export const App = (): JSX.Element => {
       infinityClientSignals.onLayoutUpdate.remove(onLayoutUpdate)
       infinityClientSignals.onParticipants.remove(onParticipants)
       infinityClientSignals.onMe.remove(onMe)
+      infinityClientSignals.onMessage.remove(onMessage)
     }
   }, [])
 
@@ -146,31 +156,34 @@ export const App = (): JSX.Element => {
         <div className='Container'>
 
           {appState === AppState.Disconnected &&
-            <Box className='NotConnected' colorScheme='dark'>
+            <div className='NotConnected'>
               <h2>Not connected to conference</h2>
               <Button onClick={() => { connect().catch((e) => { console.error(e) }) }} colorScheme='dark'>Connect</Button>
-            </Box>
+            </div>
           }
           {appState === AppState.Connecting && <Spinner colorScheme='dark' className='Connecting' />}
           {appState === AppState.Connected &&
-            <Wrapper className='Connected'>
-              <Grid className='Grid'>
-                <Cell xs={2} className='HorizontalCell'>
-                  <Conference
-                    infinityClient={infinityClient}
-                    conferenceStatus={conferenceStatus}
-                    layoutStatus={layoutStatus}
-                  />
-                </Cell>
-                <Cell xs={10} className='HorizontalCell'>
+            <div className='Connected'>
+              <Tabs className='Tabs'>
+                <Tab title='Chat'>
+                  <Chat messages={messages}/>
+                </Tab>
+                <Tab title='Participants'>
                   <Participants
                     infinityClient={infinityClient}
                     participants={participants}
                     me={me}
                   />
-                </Cell>
-              </Grid>
-            </Wrapper>
+                </Tab>
+                <Tab title='Layout'>
+                <Conference
+                    infinityClient={infinityClient}
+                    conferenceStatus={conferenceStatus}
+                    layoutStatus={layoutStatus}
+                  />
+                </Tab>
+              </Tabs>
+            </div>
           }
           {appState === AppState.Error && <ErrorPanel message={error} onClose={() => { setAppState(AppState.Disconnected) }}/>}
           {settingsOpened &&
