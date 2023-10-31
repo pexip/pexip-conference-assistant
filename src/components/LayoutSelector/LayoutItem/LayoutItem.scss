@@ -1,4 +1,8 @@
 .LayoutItem {
   display: flex;
   background-color: transparent !important;
+  color: white;
+  svg {
+    color: white;
+  }
 }

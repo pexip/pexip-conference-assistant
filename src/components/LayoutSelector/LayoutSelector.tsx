@@ -3,6 +3,7 @@ import React from 'react'
 import './LayoutSelector.scss'
 import { LayoutItem } from './LayoutItem/LayoutItem'
 import { layoutsSpeakerFocused } from './layouts/layoutsSpeakerFocused'
+import { layoutsEqual } from './layouts/layoutsEqual'
 
 export const LayoutSelector = (): JSX.Element => {
   return (
@@ -16,11 +17,15 @@ export const LayoutSelector = (): JSX.Element => {
           {...layoutInfo}
         />
       ))}
-      {/* <h3>Equal</h3>
-      <span>Highlight</span>
-      <span>2 x 2</span>
-      <span>3 x 3</span>
-      <span>4 x 4</span> */}
+      <h3>Equal</h3>
+      {layoutsEqual.map((layoutInfo) => (
+        <LayoutItem
+          key={layoutInfo.code}
+          selected={false}
+          onSelect={(code: string) => {}}
+          {...layoutInfo}
+        />
+      ))}
     </div>
   )
 }
