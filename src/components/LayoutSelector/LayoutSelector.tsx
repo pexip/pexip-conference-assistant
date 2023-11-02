@@ -8,7 +8,7 @@ import type { InfinityClient, LayoutEvent } from '@pexip/infinity'
 
 interface LayoutSelectorProps {
   infinityClient: InfinityClient
-  layoutStatus: LayoutEvent | undefined
+  layoutStatus?: LayoutEvent
 }
 
 export const LayoutSelector = (props: LayoutSelectorProps): JSX.Element => {

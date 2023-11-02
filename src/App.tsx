@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Header } from './components/Header/Header'
 
-import { Button, Icon, IconTypes, NotificationToast, Spinner, Tab, Tabs, ThemeProvider } from '@pexip/components'
+import { Button, NotificationToast, Spinner, Tab, Tabs, ThemeProvider } from '@pexip/components'
 import { Participants } from './components/Participants/Participants'
 import { Settings } from './components/Settings/Settings'
 import { conferenceKey, displayNameKey, hostPinKey, nodeKey } from './constants'
@@ -23,6 +23,7 @@ import './App.scss'
 import { ErrorPanel } from './components/ErrorPanel/ErrorPanel'
 import { Chat } from './components/Chat/Chat'
 import { LayoutSelector } from './components/LayoutSelector/LayoutSelector'
+import { RaiseHandButton } from './components/RaiseHandButton/RaiseHandButton'
 
 enum AppState {
   Disconnected,
@@ -185,10 +186,7 @@ export const App = (): JSX.Element => {
                   /> */}
                 </Tab>
               </Tabs>
-              <Button className='RaiseHandButton' >
-                <Icon source={IconTypes.IconRaiseHand} />
-                <span className='RaiseHandText'>Raise hand</span>
-              </Button>
+              <RaiseHandButton infinityClient={infinityClient} me={me}/>
             </div>
           }
           {appState === AppState.Error && <ErrorPanel message={error} onClose={() => { setAppState(AppState.Disconnected) }}/>}

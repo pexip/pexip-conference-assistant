@@ -48,7 +48,7 @@
     }
 
     button[data-active=true], button:hover {
-      background: white;
+      background: white !important;
       border-radius: 4px;
 
       span {
