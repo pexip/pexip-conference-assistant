@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { Button, Icon, IconTypes } from '@pexip/components'
 import type { InfinityClient, Participant } from '@pexip/infinity'
 
+import './RaiseHandButton.scss'
+
 interface RaiseHandButtonProps {
   infinityClient: InfinityClient
   me?: Participant

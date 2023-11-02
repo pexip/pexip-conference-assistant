@@ -1,11 +1,57 @@
 .Participants {
-  .Container {
-    padding: 1em;
-  }
-  .TableBodyCell, .TableHeadCell {
-    justify-content: center;
-    .OverlayText > label:first-child {
-      display: none
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  > .ButtonSet {
+    display: flex;
+    gap: 1em;
+    margin-bottom: 1em;;
+
+    button {
+      display: flex;
+      align-items: center;
+      background: transparent;
+      border: 1px solid #FFFFFF;
+      border-radius: 4px;
+      color: white;
+      padding: 0.8em 0.5em;
+      cursor: pointer;
+
+      &.danger {
+        color: #FF8586;
+        border: 1px solid #FF8586;
+      }
     }
+  }
+
+  .ParticipantsList {
+    position: relative;
+    flex-grow: 1;
+
+    > div.Container {
+      position: absolute;
+      overflow: auto;
+      width: 100%;
+      height: 100%;
+
+      div[role=group] > button {
+        svg > path {
+          fill: #989898;
+        }
+        span {
+          color: #989898;
+        }
+      }
+    }
+  }
+
+  .AdmitAllButton {
+    background-color: #4490F6;
+    color: white;
+    border: 0;
+    border-radius: 4px;
+    padding: 16px 12px;
   }
 }

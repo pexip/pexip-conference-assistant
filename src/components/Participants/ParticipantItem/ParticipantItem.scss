@@ -1,0 +1,17 @@
+.ParticipantItem {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 1em 0;
+
+  .DisplayName {
+    text-align: left;
+    color: #FFFFFF;
+    flex-grow: 1;
+  }
+
+  svg {
+    color: #C3C4C5;
+    margin-left: 1em;
+  }
+}

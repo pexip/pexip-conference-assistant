@@ -34,25 +34,28 @@
       align-items: center;
     }
 
-    button {
-      flex-grow: 1;
-      margin: 0 !important;
-      padding: 0.5em 0;
-      text-align: center;
-      border: 0;
+    >div[role=tablist] {
+
+      button {
+        flex-grow: 1;
+        margin: 0 !important;
+        padding: 0.5em 0;
+        text-align: center;
+        border: 0;
+      }
 
       span {
         color: white;
         font-weight: 500;
       }
-    }
 
-    button[data-active=true], button:hover {
-      background: white !important;
-      border-radius: 4px;
-
-      span {
-        color: #77AEF9
+      button[data-active=true], button:hover {
+        background: white !important;
+        border-radius: 4px;
+  
+        span {
+          color: #77AEF9
+        }
       }
     }
   }
@@ -107,25 +110,10 @@
         margin-top: 1em;
         flex-grow: 1;
       }
-
-      .Participants {
-        height: 100%;
-      }
-
-      .RaiseHandButton {
-        padding-top: calc(0.5em + 4px);
-        padding-bottom: calc(0.5em + 4px);
-
-        .RaiseHandText {
-          display: inline-flex;
-          align-items: center;
-          margin-left: 0.5em;
-        }
-      }
     }
   }
 
-  button {
+  button.GrayButton {
     background-color: #494949 !important;
     box-shadow: none !important;
     color: white !important;

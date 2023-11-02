@@ -1,0 +1,18 @@
+.RaiseHandButton {
+  padding-top: calc(0.5em + 4px);
+  padding-bottom: calc(0.5em + 4px);
+  background-color: #494949 !important;
+  box-shadow: none !important;
+  color: white !important;
+
+  &:hover {
+    background-color: #FFFFFF !important;
+    color: #77AEF9 !important;
+  }
+
+  .RaiseHandText {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.5em;
+  }
+}

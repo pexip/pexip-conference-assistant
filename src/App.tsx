@@ -174,7 +174,7 @@ export const App = (): JSX.Element => {
                   <Participants
                     infinityClient={infinityClient}
                     participants={participants}
-                    me={me}
+                    // me={me}
                   />
                 </Tab>
                 <Tab title='Layout'>

@@ -2,16 +2,14 @@ button.LayoutItem {
   display: flex;
   width: 100%;
   background-color: transparent !important;
+  border: 0;
   border-bottom: 1px solid #323232 !important;
   cursor: pointer;
   align-items: center;
-
-  &:hover {
-    background-color: transparent !important;
-  }
+  color: white;
+  padding: 0.5em 0;
 
   img {
-    // margin-left: 1em;
     width: 4em;
   }
 
