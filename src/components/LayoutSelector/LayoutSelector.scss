@@ -1,3 +1,23 @@
 .LayoutSelector {
+  width: 100%;
+  min-height: 100%;
   color: white;
+  position: relative;
+
+  >div.Container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: auto;
+
+    h4 {
+      text-align: left;
+      font-weight: 500;
+      margin:  1.5em 0;
+
+      &:nth-child(1) {
+        margin-top: 0;
+      }
+    }
+  }
 }

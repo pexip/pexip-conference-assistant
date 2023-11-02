@@ -1,8 +1,26 @@
-.LayoutItem {
+button.LayoutItem {
   display: flex;
+  width: 100%;
   background-color: transparent !important;
-  color: white;
+  border-bottom: 1px solid #323232 !important;
+  cursor: pointer;
+  align-items: center;
+
+  &:hover {
+    background-color: transparent !important;
+  }
+
+  img {
+    width: 4em;
+  }
+
+  span {
+    margin-left: 1em;
+    flex-grow: 1;
+    text-align: left;
+  }
+
   svg {
-    color: white;
+    color: #77AEF9;
   }
 }

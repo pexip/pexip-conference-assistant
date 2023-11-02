@@ -43,7 +43,7 @@ export const Chat = (props: ChatProps): JSX.Element => {
     <div className='Chat'>
       {props.messages.length === 0 && <div className='NoMessages'>No messages yet</div>}
       {props.messages.length !== 0 &&
-        <div className='MessagesContainer'>
+        <div className='Container'>
           {props.messages.map((message) => <ChatMessage key={message.id} message={message} />)}
           <span ref={ref} />
         </div>

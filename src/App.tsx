@@ -15,7 +15,8 @@ import {
   type ExtendedInfinityErrorCode,
   type ExtendedInfinityErrorMessage,
   type Participant,
-  type Message
+  type Message,
+  type LayoutEvent
 } from '@pexip/infinity'
 
 import './App.scss'
@@ -39,7 +40,7 @@ export const App = (): JSX.Element => {
   const [settingsOpened, setSettingsOpened] = useState<boolean>(false)
   const [error, setError] = useState('')
   // const [conferenceStatus, setConferenceStatus] = useState()
-  // const [layoutStatus, setLayoutStatus] = useState()
+  const [layoutStatus, setLayoutStatus] = useState<LayoutEvent>()
   const [participants, setParticipants] = useState<Participant[]>([])
   const [me, setMe] = useState<Participant>()
   const [messages, setMessages] = useState<Message[]>([])
@@ -72,7 +73,7 @@ export const App = (): JSX.Element => {
     }
 
     const onLayoutUpdate = (event: any): void => {
-      // setLayoutStatus(event)
+      setLayoutStatus(event)
     }
 
     const onParticipants = (event: any): void => {
@@ -176,7 +177,7 @@ export const App = (): JSX.Element => {
                   />
                 </Tab>
                 <Tab title='Layout'>
-                  <LayoutSelector />
+                  <LayoutSelector infinityClient={infinityClient} layoutStatus={layoutStatus}/>
                   {/* <Conference
                     infinityClient={infinityClient}
                     conferenceStatus={conferenceStatus}
@@ -184,7 +185,10 @@ export const App = (): JSX.Element => {
                   /> */}
                 </Tab>
               </Tabs>
-              <Button colorScheme='light'><Icon source={IconTypes.IconRaiseHand} />Rise hand</Button>
+              <Button className='RaiseHandButton' >
+                <Icon source={IconTypes.IconRaiseHand} />
+                <span className='RaiseHandText'>Raise hand</span>
+              </Button>
             </div>
           }
           {appState === AppState.Error && <ErrorPanel message={error} onClose={() => { setAppState(AppState.Disconnected) }}/>}
