@@ -15,7 +15,7 @@ const ChatMessage = (props: ChatMessageProps): JSX.Element => {
     <div className='ChatMessage'>
       <div className='Info'>
         <span className='DisplayName'>{props.message.displayName}</span>
-        <span className='Hour'>{`${hours}:${minutes}`}</span>
+        <span className='Hour'>{`${hours}:${minutes.toString().padStart(2, '0')}`}</span>
       </div>
       <div className='Message'>
         {props.message.message}

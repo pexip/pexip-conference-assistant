@@ -1,0 +1,11 @@
+.ConnectForm {
+  display: flex;
+  max-height: 100%;
+  text-align: left;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+}

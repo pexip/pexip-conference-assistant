@@ -10,6 +10,7 @@ import { WaitingParticipantItem } from './WaitingParticipantItem/WaitingParticip
 interface ParticipantsProps {
   infinityClient: InfinityClient
   participants: Participant[]
+  onDisconnected: () => void
 }
 
 export const Participants = (props: ParticipantsProps): JSX.Element => {
@@ -26,6 +27,7 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
 
   const handleDisconnectAll = (): void => {
     props.infinityClient.disconnectAll({}).catch((e) => { console.error(e) })
+    props.onDisconnected()
   }
 
   const handleAdmitAll = (): void => {
