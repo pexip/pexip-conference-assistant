@@ -5,6 +5,7 @@ import { Accordion, Icon, IconTypes } from '@pexip/components'
 
 import './Participants.scss'
 import { ParticipantItem } from './ParticipantItem/ParticipantItem'
+import { WaitingParticipantItem } from './WaitingParticipantItem/WaitingParticipantItem'
 
 interface ParticipantsProps {
   infinityClient: InfinityClient
@@ -16,7 +17,7 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
 
   const participantsWaitingRoom = props.participants.filter((participant) => participant.isWaiting)
   const participantsRaisedHand = props.participants.filter((participant) => participant.raisedHand)
-  const participantInMeeting = props.participants.filter((participant) => !participant.raisedHand && !participant.isWaiting)
+  const participantsInMeeting = props.participants.filter((participant) => !participant.raisedHand && !participant.isWaiting)
 
   const handleMuteAllGuests = (): void => {
     props.infinityClient.muteAllGuests({ mute: !muteAllGuests }).catch((e) => { console.error(e) })
@@ -25,6 +26,14 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
 
   const handleDisconnectAll = (): void => {
     props.infinityClient.disconnectAll({}).catch((e) => { console.error(e) })
+  }
+
+  const handleAdmitAll = (): void => {
+    participantsWaitingRoom.forEach((participant) => {
+      props.infinityClient.admit({
+        participantUuid: participant.uuid
+      }).catch((e) => { console.error(e) })
+    })
   }
 
   return (
@@ -45,9 +54,9 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
           {participantsWaitingRoom.length > 0 &&
             <Accordion title={'Waiting in lobby'} isExpanded={true}>
               {participantsWaitingRoom.map((participant) => (
-                <ParticipantItem key={participant.uuid} participant={participant} />
+                <WaitingParticipantItem key={participant.uuid} participant={participant} infinityClient={props.infinityClient}/>
               ))}
-              <button className='AdmitAllButton'>Admit all</button>
+              <button className='AdmitAllButton' onClick={handleAdmitAll}>Admit all</button>
             </Accordion>
           }
 
@@ -59,9 +68,9 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
             </Accordion>
           }
 
-          {participantInMeeting.length > 0 &&
+          {participantsInMeeting.length > 0 &&
             <Accordion title={'In this meeting'} isExpanded={true}>
-              {participantInMeeting.map((participant) => (
+              {participantsInMeeting.map((participant) => (
                 <ParticipantItem key={participant.uuid} participant={participant} />
               ))}
             </Accordion>

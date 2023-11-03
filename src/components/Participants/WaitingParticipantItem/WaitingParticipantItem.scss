@@ -1,0 +1,31 @@
+.WaitingParticipantItem {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 1em 0;
+
+  .DisplayName {
+    text-align: left;
+    color: #FFFFFF;
+    flex-grow: 1;
+  }
+
+  button {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    
+    &.admit {
+      color: #9AD36B
+    }
+
+    &.reject {
+      color: #FF8586;
+
+      svg {
+        width: 2.2em !important;
+        height: 2.2em !important;
+      }
+    }
+  }
+}
