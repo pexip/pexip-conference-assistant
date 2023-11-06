@@ -2,12 +2,13 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  padding: 1em 0;
+  padding: 1em 0.5em;
 
   .DisplayName {
     text-align: left;
     color: #FFFFFF;
     flex-grow: 1;
+    margin: auto;
   }
 
   button {

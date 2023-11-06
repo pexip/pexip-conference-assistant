@@ -49,12 +49,21 @@
         font-weight: 500;
       }
 
-      button[data-active=true], button:hover {
+      button[data-active=true],  button[data-active=true]:hover{
         background: white !important;
         border-radius: 4px;
   
         span {
-          color: #77AEF9
+          color: #0068F4 !important;
+        }
+      }
+
+      button:hover {
+        background: white !important;
+        border-radius: 4px;
+
+        span {
+          color: #494949;
         }
       }
     }
@@ -119,7 +128,7 @@
 
     &:hover {
       background-color: #FFFFFF !important;
-      color: #77AEF9 !important;
+      color: #0068F4 !important;
     }
   }
 }

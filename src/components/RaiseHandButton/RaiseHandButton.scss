@@ -5,9 +5,14 @@
   box-shadow: none !important;
   color: white !important;
 
-  &:hover {
+  &:hover, &.selected {
     background-color: #FFFFFF !important;
-    color: #77AEF9 !important;
+    color: #212121 !important;
+  }
+
+  &.selected {
+    background-color: #FFFFFF !important;
+    color: #0068F4 !important;
   }
 
   .RaiseHandText {

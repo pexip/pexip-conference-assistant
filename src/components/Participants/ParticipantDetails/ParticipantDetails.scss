@@ -1,0 +1,18 @@
+.ParticipantDetails {
+  border: 1px solid #525252;
+
+  .CloseButton {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+
+    &:hover {
+      color: #323232;
+    }
+  }
+
+  h2 {
+    text-align: center;
+    padding: 1em 0 2em 0;
+  }
+}

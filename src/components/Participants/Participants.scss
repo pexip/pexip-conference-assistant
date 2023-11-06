@@ -16,12 +16,22 @@
       border: 1px solid #FFFFFF;
       border-radius: 4px;
       color: white;
-      padding: 0.8em 0.5em;
+      padding: 0.8em 0.8em;
       cursor: pointer;
 
       &.danger {
         color: #FF8586;
         border: 1px solid #FF8586;
+      }
+
+      &:hover {
+        background-color: white;
+        color: #212121;
+
+        &.danger {
+          background-color: #FF8586;
+          color: #212121;
+        }
       }
     }
   }

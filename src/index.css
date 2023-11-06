@@ -16,3 +16,8 @@ html, body, #root {
   height: 100%;
   overflow: hidden;
 }
+
+:root {
+  --modal-mask-color: rgba(0, 0, 0, .6) !important;
+  --box-background-dark: #323232 !important;
+}

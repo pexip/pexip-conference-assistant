@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import type { InfinityClient, Participant } from '@pexip/infinity'
 import { Accordion, Icon, IconTypes } from '@pexip/components'
@@ -6,6 +6,7 @@ import { Accordion, Icon, IconTypes } from '@pexip/components'
 import './Participants.scss'
 import { ParticipantItem } from './ParticipantItem/ParticipantItem'
 import { WaitingParticipantItem } from './WaitingParticipantItem/WaitingParticipantItem'
+import { ParticipantDetails } from './ParticipantDetails/ParticipantDetails'
 
 interface ParticipantsProps {
   infinityClient: InfinityClient
@@ -15,6 +16,7 @@ interface ParticipantsProps {
 
 export const Participants = (props: ParticipantsProps): JSX.Element => {
   const [muteAllGuests, setMuteAllGuests] = useState(false)
+  const [selectedParticipant, setSelectedParticipant] = useState<Participant | null>(null)
 
   const participantsWaitingRoom = props.participants.filter((participant) => participant.isWaiting)
   const participantsRaisedHand = props.participants.filter((participant) => participant.raisedHand)
@@ -37,6 +39,13 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
       }).catch((e) => { console.error(e) })
     })
   }
+
+  useEffect(() => {
+    if (selectedParticipant != null) {
+      const participant = props.participants.find((participant) => participant.uuid === selectedParticipant.uuid)
+      setSelectedParticipant(participant ?? null)
+    }
+  }, [props.participants])
 
   return (
     <div className='Participants'>
@@ -65,7 +74,10 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
           {participantsRaisedHand.length > 0 &&
             <Accordion title={'Raised a hand'} isExpanded={true}>
               {participantsRaisedHand.map((participant) => (
-                <ParticipantItem key={participant.uuid} participant={participant} />
+                <ParticipantItem
+                  key={participant.uuid}
+                  participant={participant}
+                  onClick={() => { setSelectedParticipant(participant) }}/>
               ))}
             </Accordion>
           }
@@ -73,12 +85,23 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
           {participantsInMeeting.length > 0 &&
             <Accordion title={'In this meeting'} isExpanded={true}>
               {participantsInMeeting.map((participant) => (
-                <ParticipantItem key={participant.uuid} participant={participant} />
+                <ParticipantItem
+                  key={participant.uuid}
+                  participant={participant}
+                  onClick={() => { setSelectedParticipant(participant) }}
+                />
               ))}
             </Accordion>
           }
         </div>
       </div>
+      {selectedParticipant != null &&
+        <ParticipantDetails
+          infinityClient={props.infinityClient}
+          participant={selectedParticipant}
+          onClose={() => { setSelectedParticipant(null) }}
+        />
+      }
     </div>
   )
 }

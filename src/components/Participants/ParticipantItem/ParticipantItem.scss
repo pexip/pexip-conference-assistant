@@ -2,16 +2,33 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  padding: 1em 0;
+  padding: 1em 0.5em;
+  border-radius: 4px;
+  cursor: pointer;
+  box-sizing: border-box;
 
   .DisplayName {
     text-align: left;
     color: #FFFFFF;
     flex-grow: 1;
+    margin: auto;
   }
 
   svg {
     color: #C3C4C5;
     margin-left: 1em;
+  }
+
+  &:hover {
+    background: white;
+
+    .DisplayName {
+  
+      color: #212121;
+    }
+
+    svg {
+      color: #212121;
+    }
   }
 }

@@ -22,8 +22,14 @@ export const RaiseHandButton = (props: RaiseHandButtonProps): JSX.Element => {
     props.infinityClient.raiseHand({ raise: !raisedHand }).catch((e) => { console.error(e) })
   }
 
+  const classes = ['RaiseHandButton']
+
+  if (raisedHand) {
+    classes.push('selected')
+  }
+
   return (
-    <Button className='RaiseHandButton' onClick={handleOnClick}>
+    <Button className={classes.join(' ')} onClick={handleOnClick}>
       <Icon source={IconTypes.IconRaiseHand} />
       <span className='RaiseHandText'>{raisedHand ? 'Lower' : 'Raise'} hand</span>
     </Button>
