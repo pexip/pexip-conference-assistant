@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-
+import { useEffect, useState } from 'react'
 import {
   Box,
   BoxHeader,
@@ -20,7 +19,6 @@ import {
   Tooltip,
   notificationToastSignal
 } from '@pexip/components'
-
 import type { InfinityClient, Participant } from '@pexip/infinity'
 
 import './Participants.scss'
@@ -58,29 +56,29 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
 
   useEffect(() => {
     if (props.me != null) {
-      props.infinityClient.sendConferenceRequest({
-        path: 'participants',
-        method: 'GET'
-      })
+      props.infinityClient
+        .sendConferenceRequest({
+          path: 'participants',
+          method: 'GET'
+        })
         .then((response) => {
           if (response?.status === 200) {
-            (response.data as any).result.forEach((user: any) => {
-              const participant = props.participants.find((participant) => participant.uuid === user.uuid);
-              (participant as any).overlayText = user.overlay_text
+            ;(response.data as any).result.forEach((user: any) => {
+              const participant = props.participants.find((participant) => participant.uuid === user.uuid)
+              ;(participant as any).overlayText = user.overlay_text
             })
           }
           setParticipants(props.participants)
         })
-        .catch((e) => { console.error(e) })
+        .catch((e) => {
+          console.error(e)
+        })
     }
   }, [props.participants])
 
   const createBodyCell = (content: JSX.Element | string): JSX.Element => (
-    <TableCell className='TableBodyCell'>
-      <Text
-        variant='inherit'
-        fontVariant={FontVariant.Body}
-      >
+    <TableCell className="TableBodyCell">
+      <Text variant="inherit" fontVariant={FontVariant.Body}>
         {content}
       </Text>
     </TableCell>
@@ -117,13 +115,16 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
     }
 
     if (participant.protocol !== 'api') {
-      options = options.concat([{
-        id: participant.isMuted ? Action.UnmuteAudio : Action.MuteAudio,
-        label: participant.isMuted ? 'Unmute audio' : 'Mute audio'
-      }, {
-        id: participant.isCameraMuted ? Action.UnmuteVideo : Action.MuteVideo,
-        label: participant.isCameraMuted ? 'Unmute video' : 'Mute video'
-      }])
+      options = options.concat([
+        {
+          id: participant.isMuted ? Action.UnmuteAudio : Action.MuteAudio,
+          label: participant.isMuted ? 'Unmute audio' : 'Mute audio'
+        },
+        {
+          id: participant.isCameraMuted ? Action.UnmuteVideo : Action.MuteVideo,
+          label: participant.isCameraMuted ? 'Unmute video' : 'Mute video'
+        }
+      ])
     }
 
     if (props.me != null && props.me.uuid !== participant.uuid) {
@@ -144,23 +145,15 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
 
     return (
       <TableCell>
-        <Select
-          value={''}
-          label={''}
-          placeholder='Select action'
-          onValueChange={onAction}
-          options={options} />
+        <Select value={''} label={''} placeholder="Select action" onValueChange={onAction} options={options} />
       </TableCell>
     )
   }
 
   const createHeaderCell = (content: string): JSX.Element => (
-    <TableCell className='TableHeadCell'>
+    <TableCell className="TableHeadCell">
       <TableHeadCell>
-        <Text
-          fontVariant={FontVariant.SmallBold}
-          variant='inherit'
-        >
+        <Text fontVariant={FontVariant.SmallBold} variant="inherit">
           {content}
         </Text>
       </TableHeadCell>
@@ -236,163 +229,216 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
   }
 
   const admit = (participant: Participant): void => {
-    props.infinityClient.admit({
-      participantUuid: participant.uuid
-    })
+    props.infinityClient
+      .admit({
+        participantUuid: participant.uuid
+      })
       .then(() => {
         const message = `Admitted participant "${participant?.displayName ?? 'Unknown'}"`
         notificationToastSignal.emit([{ message }])
       })
-      .catch((e) => { console.log(e) })
+      .catch((e) => {
+        console.log(e)
+      })
   }
 
   const spotlight = (participant: Participant, enable: boolean): void => {
-    props.infinityClient.spotlight({
-      participantUuid: participant.uuid,
-      enable
-    })
+    props.infinityClient
+      .spotlight({
+        participantUuid: participant.uuid,
+        enable
+      })
       .then(() => {
         const message = enable
           ? `Spotlighted participant "${participant?.displayName ?? 'Unknown'}"`
           : `Removed spotlight from participant "${participant?.displayName ?? 'Unknown'}"`
         notificationToastSignal.emit([{ message }])
       })
-      .catch((e) => { console.log(e) })
+      .catch((e) => {
+        console.log(e)
+      })
   }
 
   const lowerHand = (participant: Participant): void => {
-    props.infinityClient.raiseHand({
-      participantUuid: participant.uuid,
-      raise: false
-    })
+    props.infinityClient
+      .raiseHand({
+        participantUuid: participant.uuid,
+        raise: false
+      })
       .then(() => {
         const message = `Lowered hand for participant "${participant?.displayName ?? 'Unknown'}"`
         notificationToastSignal.emit([{ message }])
       })
-      .catch((e) => { console.log(e) })
+      .catch((e) => {
+        console.log(e)
+      })
   }
 
   const toggleMuteAudio = (participant: Participant, mute: boolean): void => {
-    props.infinityClient.mute({
-      participantUuid: participant.uuid,
-      mute
-    })
+    props.infinityClient
+      .mute({
+        participantUuid: participant.uuid,
+        mute
+      })
       .then(() => {
         const message = mute
           ? `Muted audio for participant "${participant?.displayName ?? 'Unknown'}"`
           : `Unmuted audio for participant "${participant?.displayName ?? 'Unknown'}"`
         notificationToastSignal.emit([{ message }])
       })
-      .catch((e) => { console.log(e) })
+      .catch((e) => {
+        console.log(e)
+      })
   }
 
   const toggleMuteVideo = (participant: Participant, mute: boolean): void => {
-    props.infinityClient.muteVideo({
-      participantUuid: participant.uuid,
-      muteVideo: mute
-    })
+    props.infinityClient
+      .muteVideo({
+        participantUuid: participant.uuid,
+        muteVideo: mute
+      })
       .then(() => {
         const message = mute
           ? `Muted video for participant "${participant?.displayName ?? 'Unknown'}"`
           : `Unmuted audio for participant "${participant?.displayName ?? 'Unknown'}"`
         notificationToastSignal.emit([{ message }])
       })
-      .catch((e) => { console.log(e) })
+      .catch((e) => {
+        console.log(e)
+      })
   }
 
   const changeRole = (participant: Participant, role: 'chair' | 'guest'): void => {
-    props.infinityClient.setRole({
-      participantUuid: participant.uuid,
-      role
-    })
+    props.infinityClient
+      .setRole({
+        participantUuid: participant.uuid,
+        role
+      })
       .then(() => {
-        const message = role === 'chair'
-          ? `Set role to host for participant "${participant?.displayName ?? 'Unknown'}"`
-          : `Set role to guest for participant "${participant?.displayName ?? 'Unknown'}"`
+        const message =
+          role === 'chair'
+            ? `Set role to host for participant "${participant?.displayName ?? 'Unknown'}"`
+            : `Set role to guest for participant "${participant?.displayName ?? 'Unknown'}"`
         notificationToastSignal.emit([{ message }])
       })
-      .catch((e) => { console.log(e) })
+      .catch((e) => {
+        console.log(e)
+      })
   }
 
   const disconnect = (participant: Participant): void => {
-    props.infinityClient.kick({
-      participantUuid: participant.uuid
-    })
+    props.infinityClient
+      .kick({
+        participantUuid: participant.uuid
+      })
       .then(() => {
         const message = `Disconnected participant "${participant.displayName ?? 'Unknown'}"`
         notificationToastSignal.emit([{ message }])
       })
-      .catch((e) => { console.log(e) })
+      .catch((e) => {
+        console.log(e)
+      })
   }
 
   const participantsRows = participants?.map((participant) => (
     <TableRow key={participant.uuid}>
       {createBodyCell(participant.displayName ?? 'Unknown')}
-      {createBodyCell(<Input type="text" className='OverlayText' onChange={(event: any) => {
-        const overlayText = event.target.value
-        props.infinityClient.setTextOverlay({
-          participantUuid: participant.uuid,
-          text: overlayText
-        }).catch((e) => { console.log(e) });
-        (participant as any).overlayText = overlayText
-        setParticipants(JSON.parse(JSON.stringify(participants)))
-      } } value={(participant as any).overlayText} label={''} name={''} />)}
+      {createBodyCell(
+        <Input
+          type="text"
+          className="OverlayText"
+          onChange={(event: any) => {
+            const overlayText = event.target.value
+            props.infinityClient
+              .setTextOverlay({
+                participantUuid: participant.uuid,
+                text: overlayText
+              })
+              .catch((e) => {
+                console.log(e)
+              })
+            ;(participant as any).overlayText = overlayText
+            setParticipants(JSON.parse(JSON.stringify(participants)))
+          }}
+          value={(participant as any).overlayText}
+          label={''}
+          name={''}
+        />
+      )}
       {createBodyCell(participant.role === 'chair' ? 'host' : 'guest')}
       {createBodyCell(participant.protocol)}
-      {createBodyCell(participant.isWaiting
-        ? <Tooltip text={'Waiting'}>
+      {createBodyCell(
+        participant.isWaiting ? (
+          <Tooltip text={'Waiting'}>
             <Icon source={IconTypes.IconClock} />
           </Tooltip>
-        : '-'
+        ) : (
+          '-'
+        )
       )}
-      {createBodyCell(participant.isSpotlight
-        ? <Tooltip text={'Spotlighted'}>
+      {createBodyCell(
+        participant.isSpotlight ? (
+          <Tooltip text={'Spotlighted'}>
             <Icon source={IconTypes.IconStar} />
           </Tooltip>
-        : '-'
+        ) : (
+          '-'
+        )
       )}
-      {createBodyCell(participant.raisedHand
-        ? <Tooltip text={'Hand raised'}>
+      {createBodyCell(
+        participant.raisedHand ? (
+          <Tooltip text={'Hand raised'}>
             <Icon source={IconTypes.IconRaiseHand} />
           </Tooltip>
-        : '-'
+        ) : (
+          '-'
+        )
       )}
-      {createBodyCell(participant.isPresenting
-        ? <Tooltip text={'Presentation active'}>
+      {createBodyCell(
+        participant.isPresenting ? (
+          <Tooltip text={'Presentation active'}>
             <Icon source={IconTypes.IconPresentationOn} />
           </Tooltip>
-        : '-'
+        ) : (
+          '-'
+        )
       )}
-      {createBodyCell(!['audio', 'video'].includes(participant.callType)
-        ? '-'
-        : participant.isMuted
-          ? <Tooltip text={'Microphone Off'}>
-              <Icon source={IconTypes.IconMicrophoneOff} />
-            </Tooltip>
-          : <Tooltip text={'Microphone On'}>
-              <Icon source={IconTypes.IconMicrophoneOn} />
-            </Tooltip>
+      {createBodyCell(
+        !['audio', 'video'].includes(participant.callType) ? (
+          '-'
+        ) : participant.isMuted ? (
+          <Tooltip text={'Microphone Off'}>
+            <Icon source={IconTypes.IconMicrophoneOff} />
+          </Tooltip>
+        ) : (
+          <Tooltip text={'Microphone On'}>
+            <Icon source={IconTypes.IconMicrophoneOn} />
+          </Tooltip>
+        )
       )}
-      {createBodyCell(participant.callType !== 'video'
-        ? '-'
-        : participant.isCameraMuted
-          ? <Tooltip text={'Camera Off'}>
-              <Icon source={IconTypes.IconVideoOff} />
-            </Tooltip>
-          : <Tooltip text={'Camera On'}>
-              <Icon source={IconTypes.IconVideoOn} />
-            </Tooltip>
+      {createBodyCell(
+        participant.callType !== 'video' ? (
+          '-'
+        ) : participant.isCameraMuted ? (
+          <Tooltip text={'Camera Off'}>
+            <Icon source={IconTypes.IconVideoOff} />
+          </Tooltip>
+        ) : (
+          <Tooltip text={'Camera On'}>
+            <Icon source={IconTypes.IconVideoOn} />
+          </Tooltip>
+        )
       )}
       {createSelectCell(participant)}
     </TableRow>
   ))
 
   return (
-    <Box className='Participants' colorScheme='light'>
+    <Box className="Participants" colorScheme="light">
       <BoxHeader>
         <h3>Participants</h3>
       </BoxHeader>
-      <div className='Container'>
+      <div className="Container">
         <Table>
           <TableContent>
             <TableSection>
@@ -411,9 +457,7 @@ export const Participants = (props: ParticipantsProps): JSX.Element => {
                   {createHeaderCell('Actions')}
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {participantsRows}
-              </TableBody>
+              <TableBody>{participantsRows}</TableBody>
             </TableSection>
           </TableContent>
         </Table>

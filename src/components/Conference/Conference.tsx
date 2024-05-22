@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from 'react'
-
+import { useEffect, useState } from 'react'
 import { Box, BoxHeader, Select, ToggleSwitch } from '@pexip/components'
-import type {
-  Transforms,
-  InfinityClient,
-  ConferenceStatus,
-  LayoutEvent
-} from '@pexip/infinity'
+import type { Transforms, InfinityClient, ConferenceStatus, LayoutEvent } from '@pexip/infinity'
 
 import './Conference.scss'
 
-const layouts = ['1:0', '1:7', '1:21', '2:21', '1:33', '4:0', '9:0', '16:0', '25:0', '5:7'/*, 'ac_presentation_in_mix', 'ac_presentation_in_mix_group' */] as const
-type Layout = typeof layouts[number]
+const layouts = [
+  '1:0',
+  '1:7',
+  '1:21',
+  '2:21',
+  '1:33',
+  '4:0',
+  '9:0',
+  '16:0',
+  '25:0',
+  '5:7' /*, 'ac_presentation_in_mix', 'ac_presentation_in_mix_group' */
+] as const
+type Layout = (typeof layouts)[number]
 
 interface ConferenceProps {
   infinityClient: InfinityClient
@@ -50,16 +55,24 @@ export const Conference = (props: ConferenceProps): JSX.Element => {
   }, [props.layoutStatus])
 
   const onToggleLockConference = (): void => {
-    props.infinityClient.lock({
-      lock: !locked
-    }).catch((e) => { console.error(e) })
+    props.infinityClient
+      .lock({
+        lock: !locked
+      })
+      .catch((e) => {
+        console.error(e)
+      })
     setLocked(!locked)
   }
 
   const onToggleMuteGuests = (): void => {
-    props.infinityClient.muteAllGuests({
-      mute: !guestsMuted
-    }).catch((e) => { console.error(e) })
+    props.infinityClient
+      .muteAllGuests({
+        mute: !guestsMuted
+      })
+      .catch((e) => {
+        console.error(e)
+      })
     setGuestMuted(!guestsMuted)
   }
 
@@ -72,57 +85,74 @@ export const Conference = (props: ConferenceProps): JSX.Element => {
   const onChangeLayout = (id: string, enableOverlayText = overlayText): void => {
     const layout = id as Layout
     let transforms: Transforms
-    if (layout != null && layout as any !== 'default') {
+    if (layout != null && (layout as any) !== 'default') {
       transforms = { layout, enable_overlay_text: enableOverlayText }
     } else {
       transforms = { enable_overlay_text: enableOverlayText }
     }
-    props.infinityClient.setLayout({
-      transforms
-    }).catch((e) => { console.error(e) })
+    props.infinityClient
+      .setLayout({
+        transforms
+      })
+      .catch((e) => {
+        console.error(e)
+      })
     setLayout(layout)
   }
 
   return (
-    <Box className='Conference'>
+    <Box className="Conference">
       <BoxHeader>
         <h3>Conference</h3>
       </BoxHeader>
-      <div className='Container'>
-        <div className='TogglesContainer'>
-          <ToggleSwitch label='Locked'
+      <div className="Container">
+        <div className="TogglesContainer">
+          <ToggleSwitch
+            label="Locked"
             onChange={onToggleLockConference}
-            checked={locked} name={''}
-            className='Toggle' />
-          <ToggleSwitch label='All guest muted'
+            checked={locked}
+            name={''}
+            className="Toggle"
+          />
+          <ToggleSwitch
+            label="All guest muted"
             onChange={onToggleMuteGuests}
-            checked={guestsMuted} name={''}
-            className='Toggle' />
+            checked={guestsMuted}
+            name={''}
+            className="Toggle"
+          />
         </div>
       </div>
-      <hr className='Separator'/>
-      <div className='Container'>
+      <hr className="Separator" />
+      <div className="Container">
         <Select
-          value={layout as Layout}
+          value={layout ?? ''}
           label={'Layout'}
           isFullWidth={true}
           onValueChange={onChangeLayout}
-          options={[{
-            id: 'default',
-            label: 'Default'
-          }].concat(layouts.map((layout) => {
-            const option = {
-              id: layout,
-              label: layout
+          options={[
+            {
+              id: 'default',
+              label: 'Default'
             }
-            return option
-          }))}
+          ].concat(
+            layouts.map((layout) => {
+              const option = {
+                id: layout,
+                label: layout
+              }
+              return option
+            })
+          )}
         />
-        <div className='TogglesContainer'>
-          <ToggleSwitch label='Overlay text'
+        <div className="TogglesContainer">
+          <ToggleSwitch
+            label="Overlay text"
             onChange={onToggleOverlayText}
-            checked={overlayText} name={''}
-            className='Toggle' />
+            checked={overlayText}
+            name={''}
+            className="Toggle"
+          />
         </div>
       </div>
     </Box>

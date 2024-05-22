@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Header } from './components/Header/Header'
 
@@ -14,8 +14,9 @@ import {
   createInfinityClient,
   createInfinityClientSignals,
   type ExtendedInfinityErrorCode,
-  type ExtendedInfinityErrorMessage,
-  type Participant
+  type Participant,
+  type LayoutEvent,
+  type ConferenceStatus
 } from '@pexip/infinity'
 
 import './App.scss'
@@ -36,20 +37,19 @@ export const App = (): JSX.Element => {
   const [appState, setAppState] = useState<AppState>(AppState.Disconnected)
   const [settingsOpened, setSettingsOpened] = useState<boolean>(false)
   const [error, setError] = useState('')
-  const [conferenceStatus, setConferenceStatus] = useState()
-  const [layoutStatus, setLayoutStatus] = useState()
+  const [conferenceStatus, setConferenceStatus] = useState<ConferenceStatus>()
+  const [layoutStatus, setLayoutStatus] = useState<LayoutEvent>()
   const [participants, setParticipants] = useState<Participant[]>([])
   const [me, setMe] = useState<Participant>()
 
   useEffect(() => {
     const disconnectBrowserClosed = (): void => {
-      infinityClient?.disconnect({ reason: 'Browser closed' }).catch((e) => { console.error(e) })
+      infinityClient?.disconnect({ reason: 'Browser closed' }).catch((e) => {
+        console.error(e)
+      })
     }
 
-    const onError = (e: {
-      error: ExtendedInfinityErrorMessage
-      errorCode: ExtendedInfinityErrorCode
-    }): void => {
+    const onError = (e: { error: string; errorCode: ExtendedInfinityErrorCode }): void => {
       setAppState(AppState.Error)
       setError(e.error)
     }
@@ -62,23 +62,23 @@ export const App = (): JSX.Element => {
       setAppState(AppState.Disconnected)
     }
 
-    const onConferenceStatus = (event: any): void => {
+    const onConferenceStatus = (event: { id: string; status: ConferenceStatus }): void => {
       if (event.id === 'main') {
         setConferenceStatus(event.status)
       }
     }
 
-    const onLayoutUpdate = (event: any): void => {
+    const onLayoutUpdate = (event: LayoutEvent): void => {
       setLayoutStatus(event)
     }
 
-    const onParticipants = (event: any): void => {
+    const onParticipants = (event: { id: string; participants: Participant[] }): void => {
       if (event.id === 'main') {
         setParticipants(event.participants)
       }
     }
 
-    const onMe = (event: any): void => {
+    const onMe = (event: { id: string; participant: Participant }): void => {
       if (event.id === 'main') {
         setMe(event.participant)
       }
@@ -111,12 +111,7 @@ export const App = (): JSX.Element => {
     const displayName = localStorage.getItem(displayNameKey)
     const hostPin = localStorage.getItem(hostPinKey)
 
-    if (
-      node == null ||
-      conference == null ||
-      displayName == null ||
-      hostPin == null
-    ) {
+    if (node == null || conference == null || displayName == null || hostPin == null) {
       alert('Not configured')
     } else {
       infinityClient = createInfinityClient(infinityClientSignals, callSignals)
@@ -132,50 +127,69 @@ export const App = (): JSX.Element => {
   }
 
   return (
-    <div className='App'>
-      <ThemeProvider colorScheme='light'>
-        <NotificationToast timeout={3000} position='topCenter' />
+    <div className="App">
+      <ThemeProvider colorScheme="light">
+        <NotificationToast timeout={3000} position="topCenter" />
         <Header
           isConnected={appState === AppState.Connected}
           onDisconnectClick={() => {
-            infinityClient?.disconnect({}).catch((e) => { console.error(e) })
+            infinityClient?.disconnect({}).catch((e) => {
+              console.error(e)
+            })
             setAppState(AppState.Disconnected)
           }}
-          onSettingsClick={() => { setSettingsOpened(true) }}
+          onSettingsClick={() => {
+            setSettingsOpened(true)
+          }}
         />
-        <div className='Container'>
-
-          {appState === AppState.Disconnected &&
-            <Box className='NotConnected' colorScheme='dark'>
+        <div className="Container">
+          {appState === AppState.Disconnected && (
+            <Box className="NotConnected" colorScheme="dark">
               <h2>Not connected to conference</h2>
-              <Button onClick={() => { connect().catch((e) => { console.error(e) }) }} colorScheme='dark'>Connect</Button>
+              <Button
+                onClick={() => {
+                  connect().catch((e) => {
+                    console.error(e)
+                  })
+                }}
+                colorScheme="dark"
+              >
+                Connect
+              </Button>
             </Box>
-          }
-          {appState === AppState.Connecting && <Spinner colorScheme='dark' className='Connecting' />}
-          {appState === AppState.Connected &&
-            <Wrapper className='Connected'>
-              <Grid className='Grid'>
-                <Cell xs={2} className='HorizontalCell'>
+          )}
+          {appState === AppState.Connecting && <Spinner colorScheme="dark" className="Connecting" />}
+          {appState === AppState.Connected && (
+            <Wrapper className="Connected">
+              <Grid className="Grid">
+                <Cell xs={2} className="HorizontalCell">
                   <Conference
                     infinityClient={infinityClient}
                     conferenceStatus={conferenceStatus}
                     layoutStatus={layoutStatus}
                   />
                 </Cell>
-                <Cell xs={10} className='HorizontalCell'>
-                  <Participants
-                    infinityClient={infinityClient}
-                    participants={participants}
-                    me={me}
-                  />
+                <Cell xs={10} className="HorizontalCell">
+                  <Participants infinityClient={infinityClient} participants={participants} me={me} />
                 </Cell>
               </Grid>
             </Wrapper>
-          }
-          {appState === AppState.Error && <ErrorPanel message={error} onClose={() => { setAppState(AppState.Disconnected) }}/>}
-          {settingsOpened &&
-            <Settings onClose={() => { setSettingsOpened(false) }} />
-          }
+          )}
+          {appState === AppState.Error && (
+            <ErrorPanel
+              message={error}
+              onClose={() => {
+                setAppState(AppState.Disconnected)
+              }}
+            />
+          )}
+          {settingsOpened && (
+            <Settings
+              onClose={() => {
+                setSettingsOpened(false)
+              }}
+            />
+          )}
         </div>
       </ThemeProvider>
     </div>

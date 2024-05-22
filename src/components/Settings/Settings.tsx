@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
-
+import { useEffect, useState } from 'react'
 import { Button, Form, Input, Modal, ModalCloseButton } from '@pexip/components'
+import { conferenceKey, displayNameKey, hostPinKey, nodeKey } from '../../constants'
 
 import './Settings.scss'
-import { conferenceKey, displayNameKey, hostPinKey, nodeKey } from '../../constants'
 
 interface SettingsProps {
   onClose: () => void
@@ -31,41 +30,78 @@ export const Settings = (props: SettingsProps): JSX.Element => {
 
   const save = (event: any): void => {
     const node = event.target.node.value
-    localStorage.setItem(nodeKey, node)
+    localStorage.setItem(nodeKey, node as string)
 
     const conference = event.target.conference.value
-    localStorage.setItem(conferenceKey, conference)
+    localStorage.setItem(conferenceKey, conference as string)
 
     const displayName = event.target.displayName.value
-    localStorage.setItem(displayNameKey, displayName)
+    localStorage.setItem(displayNameKey, displayName as string)
 
     const hostPin = event.target.hostPin.value
-    localStorage.setItem(hostPinKey, hostPin)
+    localStorage.setItem(hostPinKey, hostPin as string)
 
     props.onClose()
   }
 
   return (
-    <Modal isOpen={true} className='Settings'>
-      <ModalCloseButton className='CloseButton' onClose={props.onClose}/>
+    <Modal isOpen={true} className="Settings">
+      <ModalCloseButton className="CloseButton" onClose={props.onClose} />
       <h2>Settings</h2>
-      <Form onSubmit={e => {
-        e.preventDefault()
-        save(e)
-      }}>
-      <div className='InputContainer'>
-        <Input type='text' required label='Conferencing Node' placeholder='Domain or IP' name='node'
-          value={node} onChange={(event) => { setNode(event.target.value) }} />
-        <Input type='text' required label='Conference' placeholder='Room name' name='conference'
-          value={conference} onChange={(event) => { setConference(event.target.value) }} />
-        <Input type='text' required label='Display name' placeholder='e.g. API connection' name='displayName'
-          value={displayName} onChange={(event) => { setDisplayName(event.target.value) }} />
-        <Input type='password' label='Host PIN' placeholder='e.g. 7645' name='hostPin'
-          value={hostPin} onChange={(event) => { setHostPin(event.target.value) }} />
-      </div>
-      <div className='ButtonContainer'>
-        <Button type='submit'>Save</Button>
-        <Button onClick={props.onClose}>Cancel</Button>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault()
+          save(e)
+        }}
+      >
+        <div className="InputContainer">
+          <Input
+            type="text"
+            required
+            label="Conferencing Node"
+            placeholder="Domain or IP"
+            name="node"
+            value={node}
+            onChange={(event) => {
+              setNode(event.target.value)
+            }}
+          />
+          <Input
+            type="text"
+            required
+            label="Conference"
+            placeholder="Room name"
+            name="conference"
+            value={conference}
+            onChange={(event) => {
+              setConference(event.target.value)
+            }}
+          />
+          <Input
+            type="text"
+            required
+            label="Display name"
+            placeholder="e.g. API connection"
+            name="displayName"
+            value={displayName}
+            onChange={(event) => {
+              setDisplayName(event.target.value)
+            }}
+          />
+          <Input
+            type="password"
+            label="Host PIN"
+            placeholder="e.g. 7645"
+            name="hostPin"
+            value={hostPin}
+            onChange={(event) => {
+              setHostPin(event.target.value)
+            }}
+          />
+        </div>
+        <div className="ButtonContainer">
+          <Button type="submit">Save</Button>
+          <Button onClick={props.onClose}>Cancel</Button>
         </div>
       </Form>
     </Modal>
